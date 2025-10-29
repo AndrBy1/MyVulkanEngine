@@ -9,24 +9,23 @@
 .vs/mve/FileContentIndex/9dcc5ceb-3af6-4f93-8b39-e0629f2b2591.vsidx
 /mve
 /.vs
+#might remove in the future
+*.html 
 
 # these ignores borrowed from glm
 # Compiled Object files
 *.slo
 *.lo
 *.o
-*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
 
 # Compiled Dynamic libraries
 *.so
 *.dylib
 *.dll
-
-# Executables
-*.exe
-*.out
-*.app
-
 
 # Fortran module files
 *.mod
