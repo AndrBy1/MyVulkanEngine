@@ -1,0 +1,5 @@
+In shader properties, select "Custom Build Tool" for Compile Options:
+go to custom build tool and in command line type: "C:\VulkanSDK\1.4.321.1\Bin\glslc.exe" %(FullPath) -o %(FullPath).spv
+go to outputs and type: %(FullPath).spv
+
+The compile.bat can also be used. The linux version would be called compile.sh. 

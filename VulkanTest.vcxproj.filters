@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{59cf8a8c-966c-4e59-914a-c426df4f7f34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="models">
+      <UniqueIdentifier>{8bd8d197-9064-4d43-909c-978898700799}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Sources">
+      <UniqueIdentifier>{aec996ad-0bc2-4a81-849e-53a1528f17b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine Source">
+      <UniqueIdentifier>{b84647d1-ce2d-4a83-8400-882b8e250396}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine Source\System Sources">
+      <UniqueIdentifier>{8a346084-1385-4de9-bf15-1ca5c8857bdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine Headers">
+      <UniqueIdentifier>{8b57db56-7c07-479b-ae06-ac95e284a1cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Engine Headers\System Headers">
+      <UniqueIdentifier>{ac41df60-8a67-4838-89a8-d4d840efefab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game Headers">
+      <UniqueIdentifier>{5fa1dc30-b09e-4f42-85c6-0828df5cb92a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="first_app.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboard_movement_controller.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_buffer.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_camera.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_descriptors.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_device.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_game_object.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_model.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_pipeline.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_renderer.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_swap_chain.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_window.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
+    <ClCompile Include="simple_render_system.cpp">
+      <Filter>Source Files\Engine Source\System Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="point_light_system.cpp">
+      <Filter>Source Files\Engine Source\System Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldGen.cpp">
+      <Filter>Source Files\Game Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="first_app.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboard_movement_controller.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_buffer.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_camera.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_descriptors.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_device.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_frame_info.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_game_object.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_model.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_pipeline.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_renderer.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_swap_chain.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_utils.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_window.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="point_light_system.h">
+      <Filter>Header Files\Engine Headers\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="simple_render_system.h">
+      <Filter>Header Files\Engine Headers\System Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldGen.h">
+      <Filter>Header Files\Game Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="compile.bat">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="point_light.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="point_light.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shader.vert">
+      <Filter>shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="custom_compile_option.txt">
+      <Filter>shaders</Filter>
+    </Text>
+    <Text Include="Text.txt">
+      <Filter>models</Filter>
+    </Text>
+    <Text Include="notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="models\colored_cube.obj">
+      <Filter>models</Filter>
+    </Object>
+    <Object Include="models\cube.obj">
+      <Filter>models</Filter>
+    </Object>
+    <Object Include="models\flat_vase.obj">
+      <Filter>models</Filter>
+    </Object>
+    <Object Include="models\quad.obj">
+      <Filter>models</Filter>
+    </Object>
+    <Object Include="models\smooth_vase.obj">
+      <Filter>models</Filter>
+    </Object>
+  </ItemGroup>
+</Project>

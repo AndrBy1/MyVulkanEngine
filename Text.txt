@@ -1,0 +1,6 @@
+remember to add folders containing obj files to the actual project folder. 
+
+the v is for vertex
+vt is for vertex texture
+vn is for vertex normal
+f is for face
