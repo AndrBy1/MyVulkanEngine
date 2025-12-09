@@ -58,6 +58,16 @@ namespace mve {
             },
         };
     }
+    
+    VkDescriptorImageInfo MveGameObject::attachTextureFromFile(const std::string& filepath) {
+        textureImage = std::make_unique<MveImage>(model->getDevice());
+        textureImage->createTextureImage(filepath);
+        return textureImage->descriptorInfo(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+    }
+
+    void MveGameObject::setTextureDescriptor(VkDescriptorSet descriptor) {
+        textureDescriptor = descriptor;
+    }
 
     MveGameObject MveGameObject::makePointLight(float intensity, float radius, glm::vec3 color) {
         MveGameObject gameObj = MveGameObject::createGameObject();

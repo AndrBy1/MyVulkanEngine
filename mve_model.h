@@ -1,8 +1,7 @@
 //this model file takes in .obj files and translates the vertex and indices into visual models. 
 #pragma once
 
-#include "mve_device.h"
-#include "mve_buffer.h"
+#include "mve_image.h"
 
 //libs
 #define GLM_FORCE_RADIANS
@@ -47,10 +46,17 @@ namespace mve {
 
         static std::unique_ptr<MveModel> createModelFromFile(MveDevice& device, const std::string& filepath);
 
+        VkDescriptorImageInfo attachTextureFromFile(const std::string& filepath);
+        //void setTextureDescriptor(VkDescriptorSet descriptor);
+
 		//bind the model's vertex and index buffers to a command buffer so that they can be used for rendering
         void bind(VkCommandBuffer commandBuffer);
 		//issue draw commands to render the model using the bound vertex and index buffers
         void draw(VkCommandBuffer commandBuffer);
+
+        MveImage& getTextureImage() { return *textureImage; } //might not need this
+        //VkDescriptorSet getTextureDescriptor() const { return textureDescriptor; }
+		MveDevice& getDevice() const { return mveDevice; }
 
     private:
 		//these functions create buffers that hold vertex and index data on the GPU
@@ -62,6 +68,9 @@ namespace mve {
         std::unique_ptr<MveBuffer> vertexBuffer;
         //VkDeviceMemory is a handle to a block of actual memory allocated from the GPU (or sometimes CPU) for your buffers, images, or other resources.
         uint32_t vertexCount;
+
+        std::unique_ptr<MveImage> textureImage;
+        VkDescriptorSet textureDescriptor = VK_NULL_HANDLE;
 
 		bool hasIndexBuffer = false;
         std::unique_ptr<MveBuffer> indexBuffer;

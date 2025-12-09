@@ -1,8 +1,9 @@
-//This file takes models created from mve_model.h and applies positioning, rotation and scale and light interaction
+//This file takes models created from mve_model.h and applies texture, positioning, rotation, scale and light interaction
 
 #pragma once
 
 #include "mve_model.h"
+#include "mve_image.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -48,15 +49,24 @@ namespace mve
 
         static MveGameObject makePointLight(float intensity = 10.f, float radius = 0.1f, glm::vec3 color = glm::vec3(1.f));
 
+        MveGameObject() = default;
         MveGameObject(const MveGameObject&) = delete;
         MveGameObject& operator=(const MveGameObject&) = delete;
         MveGameObject(MveGameObject&&) = default;
         MveGameObject& operator=(MveGameObject&&) = default;
 
+        VkDescriptorImageInfo attachTextureFromFile(const std::string& filepath);
+        void setTextureDescriptor(VkDescriptorSet descriptor);
+
         id_t getId() { return id; }
+        VkDescriptorSet getTextureDescriptor() const { return textureDescriptor; }
 
 		//this is set to shared ptr because multiple game objects can share the same model
         std::shared_ptr<MveModel> model{};
+
+        std::unique_ptr<MveImage> textureImage;
+        VkDescriptorSet textureDescriptor = VK_NULL_HANDLE;
+
         glm::vec3 color{};
         TransformComponent transform{};
 

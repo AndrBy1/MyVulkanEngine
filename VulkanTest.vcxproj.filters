@@ -37,6 +37,9 @@
     <Filter Include="Header Files\Game Headers">
       <UniqueIdentifier>{5fa1dc30-b09e-4f42-85c6-0828df5cb92a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="textures">
+      <UniqueIdentifier>{95742e7d-3fe9-4976-8388-d3dd67435642}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="first_app.cpp">
@@ -86,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="WorldGen.cpp">
       <Filter>Source Files\Game Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="mve_image.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +146,9 @@
     <ClInclude Include="WorldGen.h">
       <Filter>Header Files\Game Headers</Filter>
     </ClInclude>
+    <ClInclude Include="mve_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="compile.bat">
@@ -155,6 +164,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="shader.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="texture.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="texture.frag">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>
@@ -183,5 +198,16 @@
     <Object Include="models\smooth_vase.obj">
       <Filter>models</Filter>
     </Object>
+    <Object Include="models\viking_room.obj">
+      <Filter>models</Filter>
+    </Object>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="textures\viking_room.png">
+      <Filter>textures</Filter>
+    </Image>
+    <Image Include="textures\white.png">
+      <Filter>textures</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -31,11 +31,16 @@ namespace mve {
 
         std::vector<MveModel::Vertex> generateTriangles(int num);
         //order here matters
-        MveWindow MveWindow{ WIDTH, HEIGHT, "HELLO VULKAN!" };
-        MveDevice MveDevice{ MveWindow };
-		MveRenderer MveRenderer{ MveWindow, MveDevice };
+        MveWindow mveWindow{ WIDTH, HEIGHT, "HELLO VULKAN!" };
+        MveDevice mveDevice{ mveWindow };
+		MveRenderer mveRenderer{ mveWindow, mveDevice };
+		MveImage fallbackImage{ mveDevice }; //when creating images they need to be set here so they don't get destroyed too early
 		//order of declaration matters, need to be destroyed in reverse order of creation
         std::unique_ptr<MveDescriptorPool> globalPool{};
+        std::vector<VkDescriptorImageInfo> imageInfos;
+        std::vector<VkDescriptorSetLayout> setLayouts;
+
         MveGameObject::Map gameObjects;
+        MveGameObject::id_t roomId = static_cast<MveGameObject::id_t>(-1);
     };
 }

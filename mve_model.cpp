@@ -46,6 +46,17 @@ namespace mve
         return std::make_unique<MveModel>(device, builder);
     }
 
+    VkDescriptorImageInfo MveModel::attachTextureFromFile(const std::string& filepath) {
+        textureImage = std::make_unique<MveImage>(mveDevice);
+        textureImage->createTextureImage(filepath);
+        return textureImage->descriptorInfo(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+    }
+    /*
+    void MveModel::setTextureDescriptor(VkDescriptorSet descriptor){
+        textureDescriptor = descriptor;
+    }
+    */
+
     void MveModel::createVertexBuffers(const std::vector<Vertex>& vertices) {
         vertexCount = static_cast<uint32_t>(vertices.size());
         assert(vertexCount > 0 && "Vertex buffer must have at least 3 vertex");
@@ -190,7 +201,7 @@ namespace mve
                 if (index.texcoord_index >= 0) {
                     vertex.uv = {
                         attrib.texcoords[2 * index.texcoord_index + 0],
-                        attrib.texcoords[2 * index.texcoord_index + 1] //Flip v coordinate
+                        1.0f - attrib.texcoords[2 * index.texcoord_index + 1] //Flip v coordinate
                     };
                 }
                 

@@ -1,5 +1,5 @@
 //The buffer is a contiguous block of memory that holds data such as vertex attributes, indices, or uniform values that shaders can access during rendering.
-//The buffer 
+// 
 
 #pragma once
 

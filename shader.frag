@@ -3,6 +3,7 @@
 layout (location = 0) in vec3 fragColor;
 layout (location = 1) in vec3 fragPosWorld;
 layout (location = 2) in vec3 fragNormalWorld;
+layout (location = 3) in vec2 fragTexCoord;
 
 layout (location = 0) out vec4 outColor;
 
@@ -20,6 +21,8 @@ layout(set = 0, binding = 0) uniform GlobalUbo{
     PointLight pointLights[10]; //specialization constants is a method of passing constant values to shaders at pipeline creation time
     int numLights;
 } ubo;
+
+layout(set = 1, binding = 0) uniform sampler2D texSampler; //texture sampler
 
 //push constants are a small amount of data that can be passed to shaders very efficiently
 layout(push_constant) uniform Push{ //push constant is glsl for vulkan only
@@ -57,5 +60,8 @@ void main() {
         specularLight += intensity * blinnTerm;
     }
 
-    outColor = vec4(fragColor * diffuseLight + specularLight * fragColor, 1.0); 
+    //outColor = vec4(fragColor * diffuseLight + specularLight * fragColor, 1.0); 
+
+    //outColor = vec4(fragTexCoord, 0.0, 1.0); // visualize UV coordinates (should be blue/cyan/magenta)
+    outColor = texture(texSampler, fragTexCoord) * vec4(diffuseLight, 1.0) + vec4(specularLight, 1.0);
 }

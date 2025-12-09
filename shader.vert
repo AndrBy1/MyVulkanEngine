@@ -9,6 +9,7 @@ layout(location = 3) in vec2 uv;
 layout(location = 0) out vec3 fragColor;
 layout(location = 1) out vec3 fragPosWorld;
 layout(location = 2) out vec3 fragNormalWorld;
+layout(location = 3) out vec2 fragTexCoord;
 
 struct PointLight{
     vec4 position; //ignore w
@@ -48,5 +49,6 @@ void main() {
     fragNormalWorld = normalize(mat3(push.normalMatrix) * normal);
     fragPosWorld = positionWorld.xyz; //world space position of the fragment
     fragColor = color;
+    fragTexCoord = uv;
 
 }

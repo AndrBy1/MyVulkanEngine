@@ -91,6 +91,7 @@ namespace mve {
             VkDeviceMemory& imageMemory);
 
         VkPhysicalDeviceProperties properties;
+        void createImageView(VkImage image, VkFormat format, VkImageView& view);
 
     private:
         void createInstance();

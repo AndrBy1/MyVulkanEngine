@@ -10,11 +10,12 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 namespace mve {
 	class SimpleRenderSystem {
 	public:
-		SimpleRenderSystem(MveDevice& device, VkRenderPass renderPass, VkDescriptorSetLayout globalSetLayout);
+		SimpleRenderSystem(MveDevice& device, VkRenderPass renderPass, std::vector<VkDescriptorSetLayout> setLayouts);
 		~SimpleRenderSystem();
 
 		//becuase this is managing Vulkan objects for pipeline layout and command buffers, we should delete copy constructors 
@@ -22,14 +23,20 @@ namespace mve {
 		SimpleRenderSystem& operator=(const SimpleRenderSystem&) = delete; //disable copy assignment operator
 
 		void renderGameObjects(FrameInfo& frameInfo);
+		//VkPipelineLayout& getPipelineLayout() { return pipelineLayouts[0]; }
 
 	private:
-		void createPipelineLayout(VkDescriptorSetLayout globalSetLayout);
+		void createPipelineLayout(std::vector<VkDescriptorSetLayout> setLayout);
 		void createPipeline(VkRenderPass renderPass);
 
 		//order matters here since they are initialized in order listed
 		MveDevice& mveDevice;
 		std::unique_ptr<MvePipeline> mvePipeline;
+		std::unique_ptr<MvePipeline> texturePipeline;
+		//std::vector<std::unique_ptr<MvePipeline>> pipelines;
+		//std::vector<VkDescriptorSetLayout> setLayouts;
+		//std::vector<VkPipelineLayout> pipelineLayouts;
 		VkPipelineLayout pipelineLayout;
+		//VkPipelineLayout texturedPLayout;
 	};
 }

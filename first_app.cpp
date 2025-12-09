@@ -24,10 +24,10 @@
 namespace mve {
 
     FirstApp::FirstApp() {
-        globalPool = MveDescriptorPool::Builder(MveDevice)
-            .setMaxSets(MveSwapChain::MAX_FRAMES_IN_FLIGHT)
+        globalPool = MveDescriptorPool::Builder(mveDevice)
+            .setMaxSets(MveSwapChain::MAX_FRAMES_IN_FLIGHT + 3)
             .addPoolSize(VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, MveSwapChain::MAX_FRAMES_IN_FLIGHT)
-            //.addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, MveSwapChain::MAX_FRAMES_IN_FLIGHT)
+            .addPoolSize(VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 3) //for texture images
 			.build();
         loadGameObjects(); // Load the model data before creating the pipeline
     }
@@ -39,7 +39,7 @@ namespace mve {
         std::vector<std::unique_ptr<MveBuffer>> uboBuffers(MveSwapChain::MAX_FRAMES_IN_FLIGHT);
         for (int i = 0; i < uboBuffers.size(); i++) {
             uboBuffers[i] = std::make_unique<MveBuffer>(
-                MveDevice,
+                mveDevice,
                 sizeof(GlobalUbo),
                 1,
                 VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT,
@@ -48,10 +48,15 @@ namespace mve {
             uboBuffers[i]->map();
         }
 
-        auto globalSetLayout = MveDescriptorSetLayout::Builder(MveDevice)
+        auto globalSetLayout = MveDescriptorSetLayout::Builder(mveDevice)
             .addBinding(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, VK_SHADER_STAGE_ALL_GRAPHICS)
-            //.addBinding(1, VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, VK_SHADER_STAGE_VERTEX_BIT)
             .build();
+        setLayouts.push_back(globalSetLayout->getDescriptorSetLayout());
+
+        auto textureSetLayout = MveDescriptorSetLayout::Builder(mveDevice)
+            .addBinding(0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT) //Error occur bc of this
+            .build();
+        setLayouts.push_back(textureSetLayout->getDescriptorSetLayout());
 
         std::vector<VkDescriptorSet> globalDescriptorSets(MveSwapChain::MAX_FRAMES_IN_FLIGHT);
         for (int i = 0; i < globalDescriptorSets.size(); i++) {
@@ -62,17 +67,55 @@ namespace mve {
                 .build(globalDescriptorSets[i]);
         }
 
+        /**/
+        std::vector<VkDescriptorSet> textureDescriptorSets(imageInfos.size());
+        for (int i = 0; i < imageInfos.size(); i++) {
+            //VkDescriptorImageInfo roomImageInfo = models[i].getTextureImage().descriptorInfo(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+            //std::cout << "ImageInfo sampler: " << roomImageInfo.sampler << ", imageView: " << roomImageInfo.imageView << ", layout: " << roomImageInfo.imageLayout << std::endl;
+            mveDescriptorWriter(*textureSetLayout, *globalPool)
+                .writeImage(0, &imageInfos[i])
+                .build(textureDescriptorSets[i]);
+        }
+
+        /*
+        VkDescriptorSet fallbackTextureDescriptor = VK_NULL_HANDLE;
+        if (!textureDescriptorSets.empty()) {
+            fallbackTextureDescriptor = textureDescriptorSets[0];
+        }
+        
+        if (fallbackTextureDescriptor != VK_NULL_HANDLE && roomId != static_cast<MveGameObject::id_t>(-1)) {
+            auto it = gameObjects.find(roomId);
+            if (it != gameObjects.end()) {
+                it->second.setTextureDescriptor(textureDescriptorSets[0]); // only the room gets the texture
+            }
+        }*/
+        
+        int ind = 1;
+        for (auto& kv : gameObjects) {
+            auto& obj = kv.second;
+            if (obj.model == nullptr) continue;
+            //TODO: make this moore efficient
+            //if (obj.model->getTextureImage() == nullptr) continue;
+            if (obj.textureImage == nullptr) { 
+				//use fallback texture
+                //obj.model->attachTextureFromFile("textures/white.png");
+				obj.setTextureDescriptor(textureDescriptorSets[0]);
+                continue; 
+            }
+			std::cout << "index: " << ind << "\n";
+			kv.second.setTextureDescriptor(textureDescriptorSets[ind]);
+            //obj.model->setTextureDescriptor(textureDescriptorSets[ind]);
+            ind++;
+        }
+
         SimpleRenderSystem simpleRenderSystem{
-            MveDevice,
-            MveRenderer.getSwapChainRenderPass(),
-            globalSetLayout->getDescriptorSetLayout()
+            mveDevice, mveRenderer.getSwapChainRenderPass(), setLayouts
 		};
 
         PointLightSystem pointLightSystem{
-            MveDevice,
-            MveRenderer.getSwapChainRenderPass(),
-            globalSetLayout->getDescriptorSetLayout() 
+            mveDevice, mveRenderer.getSwapChainRenderPass(), globalSetLayout->getDescriptorSetLayout() 
         };
+
 
 		MveCamera camera{};
 
@@ -85,7 +128,7 @@ namespace mve {
 
 		std::cout << "sizeof(GlobalUbo): " << sizeof(GlobalUbo) << "\n";
 
-        while (!MveWindow.shouldClose()) {
+        while (!mveWindow.shouldClose()) {
             //checks and processes window level events such as keyboard and mouse input
             glfwPollEvents();
 
@@ -96,15 +139,15 @@ namespace mve {
 
 			frameTime = std::min(frameTime, 0.1f); //add max allowable frame time to avoid large jumps
 
-			cameraController.moveInPlaneXZ(MveWindow.getGLFWwindow(), frameTime, viewerObject);
+			cameraController.moveInPlaneXZ(mveWindow.getGLFWwindow(), frameTime, viewerObject);
             camera.setViewYXZ(viewerObject.transform.translation, viewerObject.transform.rotation);
 
-			float aspect = MveRenderer.getAspectRatio();
+			float aspect = mveRenderer.getAspectRatio();
 			//camera.setOrthographicProjection(-aspect, aspect, -1, 1, -1, 1);
 			camera.setPerspectiveProjection(glm::radians(50.f), aspect, 0.1f, 100.f);
 
-            if (auto commandBuffer = MveRenderer.beginFrame()) {
-				int frameIndex = MveRenderer.getFrameIndex();
+            if (auto commandBuffer = mveRenderer.beginFrame()) {
+				int frameIndex = mveRenderer.getFrameIndex();
                 FrameInfo frameInfo{
                     frameIndex,
                     frameTime,
@@ -125,45 +168,75 @@ namespace mve {
 				uboBuffers[frameIndex]->flush();
 
                 //render
-				MveRenderer.beginSwapChainRenderPass(commandBuffer);
+				mveRenderer.beginSwapChainRenderPass(commandBuffer);
 
                 //order here matters
 				simpleRenderSystem.renderGameObjects(frameInfo);
                 pointLightSystem.render(frameInfo);
 
-				MveRenderer.endSwapChainRenderPass(commandBuffer);
-				MveRenderer.endFrame();
+				mveRenderer.endSwapChainRenderPass(commandBuffer);
+				mveRenderer.endFrame();
             }
         }
         //waits for the device to finish all operations before destroying resources
-		vkDeviceWaitIdle(MveDevice.device());
+		vkDeviceWaitIdle(mveDevice.device());
     }
 
     void FirstApp::loadGameObjects() {
         //smooth uses smooth shading for vertex normals where the normal was calculated as if there was a smooth surface
         //flat uses flat shading where the normal is the same for the entire face 
 		//WE DON"T NEED ../ BEFORE THE PATH BECAUSE THE WORKING DIRECTORY IS SET TO THE PROJECT FOLDER
-        std::shared_ptr<MveModel> MveModel = MveModel::createModelFromFile(MveDevice, "models/flat_vase.obj");
+        
+        /*
+        * textureImage = std::make_unique<MveImage>(model->getDevice());
+        *textureImage->createTextureImage(filepath);*/
+        //MveImage whiteImage{ mveDevice };
+        fallbackImage.createTextureImage("textures/white.png");
+        imageInfos.push_back(fallbackImage.descriptorInfo(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
 
+        std::shared_ptr<MveModel> MveModel = MveModel::createModelFromFile(mveDevice, "models/flat_vase.obj");
         auto flatVase = MveGameObject::createGameObject();
         flatVase.model = MveModel;
         flatVase.transform.translation = { -.5f, .5f, 0.f };
         flatVase.transform.scale = { 3.f, 1.5f, 3.f };
+        //imageInfos.push_back(flatVase.attachTextureFromFile("textures/white.png"));
         gameObjects.emplace(flatVase.getId(), std::move(flatVase));
 
-        MveModel = MveModel::createModelFromFile(MveDevice, "models/smooth_vase.obj");
-
+        MveModel = MveModel::createModelFromFile(mveDevice, "models/smooth_vase.obj");
         auto smoothVase = MveGameObject::createGameObject();
         smoothVase.model = MveModel;
         smoothVase.transform.translation = { .5f, .5f, 0.f };
         smoothVase.transform.scale = { 3.f, 1.5f, 3.f };
+        //imageInfos.push_back(smoothVase.attachTextureFromFile("textures/white.png"));
         gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
 
-        MveModel = MveModel::createModelFromFile(MveDevice, "models/quad.obj");
+        MveModel = MveModel::createModelFromFile(mveDevice, "models/viking_room.obj");
+        //imageInfos.push_back(MveModel->attachTextureFromFile("textures/viking_room.png")); //find a way to make texture only on this model
+        /*
+		VkDescriptorSet roomTexDesc = VK_NULL_HANDLE;
+		VkDescriptorImageInfo roomImageInfo = MveModel->getTextureImage().descriptorInfo(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+        auto textureSetLayout = MveDescriptorSetLayout::Builder(mveDevice)
+            .addBinding(0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
+            .build();
+        mveDescriptorWriter(*textureSetLayout, *globalPool)
+            .writeImage(0, &roomImageInfo)
+			.build(roomTexDesc);
+		MveModel->setTextureDescriptor(roomTexDesc);*/
+
+        auto room = MveGameObject::createGameObject();
+        room.model = MveModel;
+        room.transform.translation = { 0.f, 0.f, 0.f };
+        room.transform.scale = { 1.f, 1.f, 1.f };
+        imageInfos.push_back(room.attachTextureFromFile("textures/viking_room.png"));
+        // capture room id if you need to reference it later
+        gameObjects.emplace(room.getId(), std::move(room));
+
+        MveModel = MveModel::createModelFromFile(mveDevice, "models/quad.obj");
         auto tile = MveGameObject::createGameObject();
         tile.model = MveModel;
         tile.transform.translation = { 0.f, .5f, 0.f };
         tile.transform.scale = { 1.f, 1.f, 1.f };
+        //imageInfos.push_back(tile.attachTextureFromFile("textures/white.png"));
         gameObjects.emplace(tile.getId(), std::move(tile));
 
         std::vector<glm::vec3> lightColors{

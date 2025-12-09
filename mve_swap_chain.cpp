@@ -124,7 +124,7 @@ namespace mve {
 
         presentInfo.pImageIndices = imageIndex;
 
-        vkQueueWaitIdle(device.presentQueue()); // MAYBE REMOVE WHEN ON WINDOWS!
+        vkQueueWaitIdle(device.presentQueue()); // MAYBE REMOVE depending on validation errors
         //vkQueuePresentKHR hands rendered image from swapchain over to presentation engine (like the window) so it can display on screen.
         auto result = vkQueuePresentKHR(device.presentQueue(), &presentInfo);
 
@@ -198,6 +198,10 @@ namespace mve {
     void MveSwapChain::createImageViews() {
         swapChainImageViews.resize(swapChainImages.size());
         for (size_t i = 0; i < swapChainImages.size(); i++) {
+            device.createImageView(swapChainImages[i], swapChainImageFormat, swapChainImageViews[i]);
+        }
+        /*
+        for (size_t i = 0; i < swapChainImages.size(); i++) {
             VkImageViewCreateInfo viewInfo{};
             viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
             viewInfo.image = swapChainImages[i];
@@ -213,7 +217,7 @@ namespace mve {
                 VK_SUCCESS) {
                 throw std::runtime_error("failed to create texture image view!");
             }
-        }
+        }*/
     }
 
     void MveSwapChain::createRenderPass() {
