@@ -76,19 +76,6 @@ namespace mve {
                 .writeImage(0, &imageInfos[i])
                 .build(textureDescriptorSets[i]);
         }
-
-        /*
-        VkDescriptorSet fallbackTextureDescriptor = VK_NULL_HANDLE;
-        if (!textureDescriptorSets.empty()) {
-            fallbackTextureDescriptor = textureDescriptorSets[0];
-        }
-        
-        if (fallbackTextureDescriptor != VK_NULL_HANDLE && roomId != static_cast<MveGameObject::id_t>(-1)) {
-            auto it = gameObjects.find(roomId);
-            if (it != gameObjects.end()) {
-                it->second.setTextureDescriptor(textureDescriptorSets[0]); // only the room gets the texture
-            }
-        }*/
         
         int ind = 1;
         for (auto& kv : gameObjects) {
@@ -187,57 +174,14 @@ namespace mve {
         //flat uses flat shading where the normal is the same for the entire face 
 		//WE DON"T NEED ../ BEFORE THE PATH BECAUSE THE WORKING DIRECTORY IS SET TO THE PROJECT FOLDER
         
-        /*
-        * textureImage = std::make_unique<MveImage>(model->getDevice());
-        *textureImage->createTextureImage(filepath);*/
-        //MveImage whiteImage{ mveDevice };
-        fallbackImage.createTextureImage("textures/white.png");
+        //fallback image needs to be created before any image since imageInfos relies on it to be in [0]
+        fallbackImage.createTextureImage("textures/white.png"); 
         imageInfos.push_back(fallbackImage.descriptorInfo(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
 
-        std::shared_ptr<MveModel> MveModel = MveModel::createModelFromFile(mveDevice, "models/flat_vase.obj");
-        auto flatVase = MveGameObject::createGameObject();
-        flatVase.model = MveModel;
-        flatVase.transform.translation = { -.5f, .5f, 0.f };
-        flatVase.transform.scale = { 3.f, 1.5f, 3.f };
-        //imageInfos.push_back(flatVase.attachTextureFromFile("textures/white.png"));
-        gameObjects.emplace(flatVase.getId(), std::move(flatVase));
-
-        MveModel = MveModel::createModelFromFile(mveDevice, "models/smooth_vase.obj");
-        auto smoothVase = MveGameObject::createGameObject();
-        smoothVase.model = MveModel;
-        smoothVase.transform.translation = { .5f, .5f, 0.f };
-        smoothVase.transform.scale = { 3.f, 1.5f, 3.f };
-        //imageInfos.push_back(smoothVase.attachTextureFromFile("textures/white.png"));
-        gameObjects.emplace(smoothVase.getId(), std::move(smoothVase));
-
-        MveModel = MveModel::createModelFromFile(mveDevice, "models/viking_room.obj");
-        //imageInfos.push_back(MveModel->attachTextureFromFile("textures/viking_room.png")); //find a way to make texture only on this model
-        /*
-		VkDescriptorSet roomTexDesc = VK_NULL_HANDLE;
-		VkDescriptorImageInfo roomImageInfo = MveModel->getTextureImage().descriptorInfo(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-        auto textureSetLayout = MveDescriptorSetLayout::Builder(mveDevice)
-            .addBinding(0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, VK_SHADER_STAGE_FRAGMENT_BIT)
-            .build();
-        mveDescriptorWriter(*textureSetLayout, *globalPool)
-            .writeImage(0, &roomImageInfo)
-			.build(roomTexDesc);
-		MveModel->setTextureDescriptor(roomTexDesc);*/
-
-        auto room = MveGameObject::createGameObject();
-        room.model = MveModel;
-        room.transform.translation = { 0.f, 0.f, 0.f };
-        room.transform.scale = { 1.f, 1.f, 1.f };
-        imageInfos.push_back(room.attachTextureFromFile("textures/viking_room.png"));
-        // capture room id if you need to reference it later
-        gameObjects.emplace(room.getId(), std::move(room));
-
-        MveModel = MveModel::createModelFromFile(mveDevice, "models/quad.obj");
-        auto tile = MveGameObject::createGameObject();
-        tile.model = MveModel;
-        tile.transform.translation = { 0.f, .5f, 0.f };
-        tile.transform.scale = { 1.f, 1.f, 1.f };
-        //imageInfos.push_back(tile.attachTextureFromFile("textures/white.png"));
-        gameObjects.emplace(tile.getId(), std::move(tile));
+        makeModelObj("models/flat_vase.obj", { -.5f, .5f, 0.f }, { 3.f, 1.5f, 3.f });
+        makeModelObj("models/smooth_vase.obj", { .5f, .5f, 0.f }, { 3.f, 1.5f, 3.f });
+        makeModelObj("models/viking_room.obj", { 0.f, .3f, 1.f }, { 1.f, 1.f, 1.f }, { glm::radians(90.f), glm::radians(90.f), 0.f }, "textures/viking_room.png");
+        makeModelObj("models/quad.obj", { 0.f, .5f, 0.f }, { 1.f, 1.f, 1.f });
 
         std::vector<glm::vec3> lightColors{
             {1.f, .1f, .1f},
@@ -253,6 +197,7 @@ namespace mve {
             pointLight.color = lightColors[i];
             
 			//rotate function creates a rotation matrix given an angle and an axis of rotation
+			//param1: m is the matrix to be rotated. param2: angle in radians. param3: axis of rotation
             auto rotateLight = glm::rotate(glm::mat4(1.f), (i * glm::two_pi<float>()) / lightColors.size(), { 0.f, -1.f, 0.f });
             pointLight.transform.translation = glm::vec3(rotateLight * glm::vec4(-1.f, -1.f, -1.f, 0.f));
             //pointLight.transform.translation.y = -2.f;
@@ -260,4 +205,18 @@ namespace mve {
             gameObjects.emplace(pointLight.getId(), std::move(pointLight));
         }
     }
+
+    void FirstApp::makeModelObj(std::string modelPath, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation, std::string texturePath) {
+        std::shared_ptr<MveModel> MveModel = MveModel::createModelFromFile(mveDevice, modelPath);
+        auto obj = MveGameObject::createGameObject();
+        obj.model = MveModel;
+        obj.transform.translation = position;
+        obj.transform.scale = scale;
+        obj.transform.rotation = rotation;
+		if (texturePath != ""){
+            imageInfos.push_back(obj.attachTextureFromFile(texturePath));
+        }
+        //When the object is getting emplaced, IT GETS DESTROYED AFTER THE FUNCTION ENDS BC IT IS A LOCAL VARIABLE
+        gameObjects.emplace(obj.getId(), std::move(obj));
+	}
 }

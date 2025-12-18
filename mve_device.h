@@ -53,14 +53,14 @@ namespace mve {
         MveDevice& operator=(MveDevice&&) = delete;
 
 		//VkCommandPool is a Vulkan object that manages the memory and lifecycle of command buffers, which are used to record and submit rendering commands to the GPU
-        VkCommandPool getCommandPool() { return commandPool; }
+        const VkCommandPool getCommandPool() { return commandPool; }
 		//VkDevice is a logical representation of a physical GPU, used to interact with the GPU and manage resources
-        VkDevice device() { return device_; }
+        const VkDevice device() { return device_; }
 		//VkSurfaceKHR is an abstraction for a platform-specific surface that can be used for rendering and presentation. Surface is a Vulkan object that represents a surface to present rendered images to, such as a window or display
-        VkSurfaceKHR surface() { return surface_; }
+        const VkSurfaceKHR surface() { return surface_; }
 		//VkQueue is a handle to a queue on a device, used to submit command buffers for execution
-        VkQueue graphicsQueue() { return graphicsQueue_; }
-        VkQueue presentQueue() { return presentQueue_; }
+        const VkQueue graphicsQueue() { return graphicsQueue_; }
+        const VkQueue presentQueue() { return presentQueue_; }
 
 		//SwapChainSupportDetails is a struct that contains information about the swap chain support of a physical device, including its capabilities, supported formats, and present modes
         SwapChainSupportDetails getSwapChainSupport() { return querySwapChainSupport(physicalDevice); }

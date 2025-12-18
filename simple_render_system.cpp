@@ -26,17 +26,10 @@ namespace mve {
 
 		createPipelineLayout(setLayouts);
 		createPipeline(renderPass);
-		/*
-		for (int i = 0; i < setLayouts.size(); i++) {
-		}*/
 	}
 
 	SimpleRenderSystem::~SimpleRenderSystem() {
 		vkDestroyPipelineLayout(mveDevice.device(), pipelineLayout, nullptr);
-		/*
-		for (int i = 0; i < pipelineLayouts.size(); i++) {
-			
-		}*/
 	}
 
 	void SimpleRenderSystem::createPipelineLayout(std::vector <VkDescriptorSetLayout> setLayouts) {
@@ -50,7 +43,6 @@ namespace mve {
 		pushConstantRange.size = sizeof(SimplePushConstantData);
 
 		//descriptor set layouts define the structure of descriptor sets that will be used by the pipeline
-		//std::vector<VkDescriptorSetLayout> descriptorSetLayouts{ setLayouts };
 
 		VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
 		pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
@@ -64,7 +56,6 @@ namespace mve {
 		if (vkCreatePipelineLayout(mveDevice.device(), &pipelineLayoutInfo, nullptr, &pipelineLayout) != VK_SUCCESS) {
 			throw std::runtime_error("failed to create pipeline layout!");
 		}
-		//pipelineLayouts.push_back(pLayout);
 	}
 
 	void SimpleRenderSystem::createPipeline(VkRenderPass renderPass) {
@@ -89,13 +80,10 @@ namespace mve {
 		for (auto& obj : frameInfo.gameObjects) {
 			//std::cout << " obj:" << obj.first << "\n";
 			if (obj.second.model == nullptr) continue;
-			//VkDescriptorSet textureSet = obj.second.model->getTextureDescriptor();
 			
 			VkDescriptorSet textureSet = obj.second.getTextureDescriptor();
 			
 			if (textureSet != VK_NULL_HANDLE) {
-				//texturePipeline->bind(frameInfo.commandBuffer);
-				//std::cout << " textureSet" << "\n";
 
 				vkCmdBindDescriptorSets(frameInfo.commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 1, 1,
 					&textureSet, 0, nullptr

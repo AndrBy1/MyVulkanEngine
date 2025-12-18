@@ -27,14 +27,16 @@ namespace mve {
         void run();
 
     private:
+		//loadGameObjects is where we load models and create game objects
         void loadGameObjects();
+		void makeModelObj(std::string modelPath, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation = { 0.f, 0.f, 0.f }, std::string texturePath = "");
 
         std::vector<MveModel::Vertex> generateTriangles(int num);
         //order here matters
         MveWindow mveWindow{ WIDTH, HEIGHT, "HELLO VULKAN!" };
         MveDevice mveDevice{ mveWindow };
 		MveRenderer mveRenderer{ mveWindow, mveDevice };
-		MveImage fallbackImage{ mveDevice }; //when creating images they need to be set here so they don't get destroyed too early
+		MveImage fallbackImage{ mveDevice }; //when creating standalone images they need to be set here so they don't get destroyed too early
 		//order of declaration matters, need to be destroyed in reverse order of creation
         std::unique_ptr<MveDescriptorPool> globalPool{};
         std::vector<VkDescriptorImageInfo> imageInfos;

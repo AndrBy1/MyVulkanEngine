@@ -51,11 +51,6 @@ namespace mve
         textureImage->createTextureImage(filepath);
         return textureImage->descriptorInfo(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
     }
-    /*
-    void MveModel::setTextureDescriptor(VkDescriptorSet descriptor){
-        textureDescriptor = descriptor;
-    }
-    */
 
     void MveModel::createVertexBuffers(const std::vector<Vertex>& vertices) {
         vertexCount = static_cast<uint32_t>(vertices.size());

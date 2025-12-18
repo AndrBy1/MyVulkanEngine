@@ -55,7 +55,6 @@ namespace mve {
         void draw(VkCommandBuffer commandBuffer);
 
         MveImage& getTextureImage() { return *textureImage; } //might not need this
-        //VkDescriptorSet getTextureDescriptor() const { return textureDescriptor; }
 		MveDevice& getDevice() const { return mveDevice; }
 
     private:

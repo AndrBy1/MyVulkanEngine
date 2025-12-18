@@ -155,7 +155,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Andre\Desktop\Personal\Libraries\External\tinyObjLoader;C:\VulkanSDK\1.4.321.1\Include;C:\Users\Andre\Desktop\Personal\Libraries\glm;C:\Users\Andre\Desktop\Personal\Libraries\glfw-3.4.bin.WIN64\include;C:\Users\Andre\Desktop\Personal\Libraries\External;C:\Users\Andre\Desktop\Personal\MyVulkanEngine\Libraries\external\stb_master;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\VulkanSDK\1.4.321.1\Include;C:\Users\Andre\Desktop\Personal\MyVulkanEngine\Libraries\glm;C:\Users\Andre\Desktop\Personal\MyVulkanEngine\Libraries\glfw-3.4.bin.WIN64\include;C:\Users\Andre\Desktop\Personal\MyVulkanEngine\Libraries\external;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -207,7 +207,6 @@
     <ClCompile Include="mve_renderer.cpp" />
     <ClCompile Include="mve_swap_chain.cpp" />
     <ClCompile Include="mve_window.cpp" />
-    <ClCompile Include="WorldGen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="first_app.h" />
@@ -227,7 +226,6 @@
     <ClInclude Include="mve_swap_chain.h" />
     <ClInclude Include="mve_utils.h" />
     <ClInclude Include="mve_window.h" />
-    <ClInclude Include="WorldGen.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag">
@@ -260,8 +258,6 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='custom|x64'">"C:\VulkanSDK\1.4.321.1\Bin\glslc.exe" %(FullPath) -o %(FullPath).spv</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='custom|x64'">%(FullPath).spv</Outputs>
     </None>
-    <None Include="texture.frag" />
-    <None Include="texture.vert" />
   </ItemGroup>
   <ItemGroup>
     <None Include="point_light.frag">
@@ -321,7 +317,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='custom|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </Text>
-    <Text Include="notes.txt" />
     <Text Include="Text.txt" />
   </ItemGroup>
   <ItemGroup>

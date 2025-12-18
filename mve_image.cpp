@@ -12,9 +12,6 @@
 
 namespace mve {
     MveImage::MveImage(MveDevice& device) : mveDevice{ device } {
-        //createTextureImage(); this might be better to call from first app to control when image is created
-        //
-        //createVertexBuffer(); 
         createTextureSampler();
     }
 

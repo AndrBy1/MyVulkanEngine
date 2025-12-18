@@ -20,8 +20,6 @@ namespace mve {
 
         VkDescriptorImageInfo descriptorInfo(VkImageLayout imageLayout);
 
-        //AveDevice& getDevice() const { return mveDevice; }
-
         //for debugging
         VkImageView getImageView() const { return textureImageView; }
 

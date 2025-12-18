@@ -32,11 +32,6 @@ namespace mve {
 		//order matters here since they are initialized in order listed
 		MveDevice& mveDevice;
 		std::unique_ptr<MvePipeline> mvePipeline;
-		std::unique_ptr<MvePipeline> texturePipeline;
-		//std::vector<std::unique_ptr<MvePipeline>> pipelines;
-		//std::vector<VkDescriptorSetLayout> setLayouts;
-		//std::vector<VkPipelineLayout> pipelineLayouts;
 		VkPipelineLayout pipelineLayout;
-		//VkPipelineLayout texturedPLayout;
 	};
 }

@@ -1,5 +1,10 @@
 #include "mve_game_object.h"
 
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+#include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
+
 namespace mve {
     glm::mat4 TransformComponent::mat4() {
         const float c3 = glm::cos(rotation.z);
