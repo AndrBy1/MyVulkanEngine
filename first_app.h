@@ -4,7 +4,8 @@
 #pragma once //pragma once prevents multiple inclusions of the same header file similar to #ifndef guards
 #include "mve_window.h"
 #include "mve_device.h"
-#include "mve_game_object.h"
+//#include "mve_game_object.h"
+#include "mve_physics.h"
 #include "mve_renderer.h"
 #include "mve_descriptors.h"
 
@@ -12,8 +13,10 @@
 #include <vector>
 
 namespace mve {
+
     class FirstApp {
     public:
+
         static constexpr int WIDTH = 800;
         static constexpr int HEIGHT = 600;
 

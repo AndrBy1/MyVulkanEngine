@@ -84,6 +84,9 @@
     <ClCompile Include="mve_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mve_physics.cpp">
+      <Filter>Source Files\Engine Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="first_app.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="mve_image.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_physics.h">
+      <Filter>Header Files\Engine Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

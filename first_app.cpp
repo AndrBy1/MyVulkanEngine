@@ -79,6 +79,7 @@ namespace mve {
         
         int ind = 1;
         for (auto& kv : gameObjects) {
+			std::cout << " obj id: " << kv.first << "\n";
             auto& obj = kv.second;
             if (obj.model == nullptr) continue;
             //TODO: make this moore efficient
@@ -113,7 +114,10 @@ namespace mve {
         //returns a high precision value representing current time
 		auto currentTime = std::chrono::high_resolution_clock::now();
 
-		std::cout << "sizeof(GlobalUbo): " << sizeof(GlobalUbo) << "\n";
+		PhysicsClass physics;
+
+		physics.addRigidBody(1);
+		physics.setSpeed(1, { -0.5f, -0.5f, 0.5f });
 
         while (!mveWindow.shouldClose()) {
             //checks and processes window level events such as keyboard and mouse input
@@ -148,11 +152,22 @@ namespace mve {
                 ubo.projection = camera.getProjection();
                 ubo.view = camera.getView();
                 ubo.inverseView = camera.getInverseView();
-
+                physics.step(frameTime);
+                
 				pointLightSystem.update(frameInfo, ubo);
                 //std::cout << "buffer data: " << typeid(&ubo).name() << std::endl;
 				uboBuffers[frameIndex]->writeToBuffer(&ubo); //don't need offset or size because we are using the entire buffer which is set in the constructor which is found at the top of this function
 				uboBuffers[frameIndex]->flush();
+                /*
+                for (int i = 0; i < physics.rBodies.size(); i++) {
+                    if (physics.rBodies[i].isStatic) continue;
+					gameObjects.at(i).transform.translation += physics.rBodies[i].velocity * frameTime;
+                }*/
+                for(auto& body: physics.rBodies){
+                    //std::cout << "Object ID: " << body.objId << " is at position: " << gameObjects.at(body.objId).transform.translation.z << "\n";
+					if (body.isStatic) continue;
+					gameObjects.at(body.objId).transform.translation += body.velocity * frameTime;
+				}
 
                 //render
 				mveRenderer.beginSwapChainRenderPass(commandBuffer);
