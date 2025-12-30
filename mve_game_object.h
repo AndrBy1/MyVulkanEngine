@@ -58,6 +58,7 @@ namespace mve
         VkDescriptorImageInfo attachTextureFromFile(const std::string& filepath);
         void setTextureDescriptor(VkDescriptorSet descriptor);
 
+        //bool collides = true;
         id_t getId() { return id; }
         VkDescriptorSet getTextureDescriptor() const { return textureDescriptor; }
 

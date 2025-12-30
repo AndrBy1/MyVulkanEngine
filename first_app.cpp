@@ -116,8 +116,9 @@ namespace mve {
 
 		PhysicsClass physics;
 
-		physics.addRigidBody(1);
-		physics.setSpeed(1, { -0.5f, -0.5f, 0.5f });
+        physics.addRigidBody(gameObjects.at(0));
+        physics.addRigidBody(gameObjects.at(1));
+		physics.applyForce(1, { -5.f, 0.f, 0.f });
 
         while (!mveWindow.shouldClose()) {
             //checks and processes window level events such as keyboard and mouse input
@@ -158,15 +159,14 @@ namespace mve {
                 //std::cout << "buffer data: " << typeid(&ubo).name() << std::endl;
 				uboBuffers[frameIndex]->writeToBuffer(&ubo); //don't need offset or size because we are using the entire buffer which is set in the constructor which is found at the top of this function
 				uboBuffers[frameIndex]->flush();
-                /*
-                for (int i = 0; i < physics.rBodies.size(); i++) {
-                    if (physics.rBodies[i].isStatic) continue;
-					gameObjects.at(i).transform.translation += physics.rBodies[i].velocity * frameTime;
-                }*/
+
+                physics.step(frameTime);
+
+				//update game object positions from physics simulation
                 for(auto& body: physics.rBodies){
                     //std::cout << "Object ID: " << body.objId << " is at position: " << gameObjects.at(body.objId).transform.translation.z << "\n";
 					if (body.isStatic) continue;
-					gameObjects.at(body.objId).transform.translation += body.velocity * frameTime;
+					gameObjects.at(body.objId).transform.translation = body.position;
 				}
 
                 //render
