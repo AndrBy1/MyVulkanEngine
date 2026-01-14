@@ -118,7 +118,9 @@ namespace mve {
 
         physics.addRigidBody(gameObjects.at(0));
         physics.addRigidBody(gameObjects.at(1));
-		physics.applyForce(1, { -5.f, 0.f, 0.f });
+		physics.addBoxCollider(0, {0.3f, 0.3f, 0.3f});
+		physics.addBoxCollider(1, { 0.3f, 0.3f, 0.3f });
+		physics.applyForce(1, { -100.f, 35.f, 70.f });
 
         while (!mveWindow.shouldClose()) {
             //checks and processes window level events such as keyboard and mouse input
@@ -165,8 +167,9 @@ namespace mve {
 				//update game object positions from physics simulation
                 for(auto& body: physics.rBodies){
                     //std::cout << "Object ID: " << body.objId << " is at position: " << gameObjects.at(body.objId).transform.translation.z << "\n";
-					if (body.isStatic) continue;
-					gameObjects.at(body.objId).transform.translation = body.position;
+					if (body.sleep) continue;
+                    gameObjects.at(body.objId).transform.translation = body.position;
+                    //gameObjects.at(body.objId).transform.rotation = body.rotation;
 				}
 
                 //render
@@ -193,8 +196,8 @@ namespace mve {
         fallbackImage.createTextureImage("textures/white.png"); 
         imageInfos.push_back(fallbackImage.descriptorInfo(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL));
 
-        makeModelObj("models/flat_vase.obj", { -.5f, .5f, 0.f }, { 3.f, 1.5f, 3.f });
-        makeModelObj("models/smooth_vase.obj", { .5f, .5f, 0.f }, { 3.f, 1.5f, 3.f });
+        makeModelObj("models/flat_vase.obj", { -.2f, .5f, 0.f }, { 3.f, 1.5f, 3.f });
+        makeModelObj("models/smooth_vase.obj", { .8f, .2f, -0.5f }, { 3.f, 1.5f, 3.f });
         makeModelObj("models/viking_room.obj", { 0.f, .3f, 1.f }, { 1.f, 1.f, 1.f }, { glm::radians(90.f), glm::radians(90.f), 0.f }, "textures/viking_room.png");
         makeModelObj("models/quad.obj", { 0.f, .5f, 0.f }, { 1.f, 1.f, 1.f });
 
