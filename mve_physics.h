@@ -14,14 +14,14 @@
 
 namespace mve{
 	struct RigidBody {
-		glm::vec3 position{ 0.f };
+		glm::vec3 position;
 		glm::vec3 velocity{ 0.f }; //
 		glm::vec3 angularVelocity{ 0.f };
 		//quat is quaternion representation for rotation
-		glm::quat rotation; 
+		glm::quat rotation;
 		glm::vec3 force{ 0.f };
 		int objId; //might not needed bc the rigid body is stored in a vector where the index is the objId
-		float mass{ 1.f };
+		float mass;
 		float sleepTimer = 0.f;
 		bool sleep{ false };
 		bool collidable = false;
@@ -85,14 +85,13 @@ namespace mve{
 
 		void step(float dt); //step is a single update per frame
 
+		void addRigidBody(MveGameObject& obj, float mass = 1.f);
+
 		void addSphereCollider(int objId, float radius);
 		void addBoxCollider(int objId, const glm::vec3& halfSize);
 
 		void setSpeed(int objId, const glm::vec3& speed);
 		void applyForce(int objId, const glm::vec3& force);
-
-		void addRigidBody(MveGameObject& obj);
-
 
 		Cell getCell(const glm::vec3& pos, float cellSize);
 
@@ -142,7 +141,7 @@ namespace mve{
 		std::vector<SphereCollider> sphereColliders;
 		std::vector<BoxCollider> boxColliders;
 		std::vector<Contact> contacts;
-		std::vector<MveGameObject>* debugPoints;
+		//std::vector<MveGameObject>* debugPoints;
 		//build grid
 		std::unordered_map<uint64_t, std::vector<uint32_t>> grid; //maps cell keys to rigid body indices
 		std::vector<std::pair<uint32_t, uint32_t>> aabbPairs; //maps rigid body indices to their AABBs potential collision pairs

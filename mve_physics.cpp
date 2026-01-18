@@ -31,10 +31,11 @@ namespace mve {
 				break;
 			}
 		}
+		/*
 		if (foundIndex < 0) {
 			std::cout << "object ID: " << objId << " needs a rigidbody to add a collider.\n";
 			return;
-		}
+		}*/
 		sCollider.bodyIndex = static_cast<uint32_t>(foundIndex);
 		sphereColliders.push_back(sCollider);
 	}
@@ -53,10 +54,11 @@ namespace mve {
 				break;
 			}
 		}
+		/*
 		if (foundIndex < 0) {
 			std::cout << "object ID: " << objId << " needs a rigidbody to add a collider.\n";
 			return;
-		}
+		}*/
 		bCollider.bodyIndex = static_cast<uint32_t>(foundIndex);
 		boxColliders.push_back(bCollider);
 	}
@@ -85,10 +87,11 @@ namespace mve {
 		//std::cout << "apply force on Object ID: " << objId << " failed. Object not found in physics system.\n";
 	}
 
-	void PhysicsClass::addRigidBody(MveGameObject& obj) {
+	void PhysicsClass::addRigidBody(MveGameObject& obj, float mass) {
 		RigidBody body;
 		body.objId = obj.getId();
 		body.position = obj.transform.translation;
+		body.mass = mass;
 		rBodies.push_back(body);
 	}
 
