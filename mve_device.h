@@ -34,9 +34,9 @@ namespace mve {
 
     class MveDevice {
     public:
-		//Determines whether validation layers should be enabled based on whether the NDEBUG macro is defined.
-		//NDEBUG is a standard macro in C/C++ that is typically defined in release builds to disable debugging features and assertions.
-		//to turn it on go to project properties -> C/C++ -> Preprocessor -> Preprocessor Definitions and add NDEBUG. Maybe set configuration to all configuration and platform to all platform after
+        //Determines whether validation layers should be enabled based on whether the NDEBUG macro is defined.
+        //NDEBUG is a standard macro in C/C++ that is typically defined in release builds to disable debugging features and assertions.
+        //to turn it on go to project properties -> C/C++ -> Preprocessor -> Preprocessor Definitions and add NDEBUG. Maybe set configuration to all configuration and platform to all platform after
 #ifdef NDEBUG
 		const bool enableValidationLayers = false; //
 #else
@@ -48,7 +48,8 @@ namespace mve {
 
         // Not copyable or movable
         MveDevice(const MveDevice&) = delete;
-		MveDevice& operator=(const MveDevice&) = delete; //operator is a special function that is called when an object is assigned a new value from another existing object, in this case, it prevents copying of MveDevice objects
+        //operator is a special function that is called when an object is assigned a new value from another existing object, in this case, it prevents copying of MveDevice objects
+		MveDevice& operator=(const MveDevice&) = delete; 
         MveDevice(MveDevice&&) = delete;
         MveDevice& operator=(MveDevice&&) = delete;
 

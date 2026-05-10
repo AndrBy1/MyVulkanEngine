@@ -32,7 +32,7 @@ namespace mve {
     private:
 		//loadGameObjects is where we load models and create game objects
         void loadGameObjects();
-		void makeModelObj(std::string modelPath, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation = { 0.f, 0.f, 0.f }, std::string texturePath = "");
+        void makeModelObj(std::string modelPath, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation = { 0.f, 0.f, 0.f }, std::string texturePath = "");
 
         std::vector<MveModel::Vertex> generateTriangles(int num);
         //order here matters

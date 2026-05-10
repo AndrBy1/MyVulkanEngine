@@ -33,7 +33,6 @@ namespace mve {
 
         if (imagePath.empty()) {
             std::cout << "no image path provided\n";
-
         }
 
         std::string fullPath = ENGINE_DIR + imagePath;

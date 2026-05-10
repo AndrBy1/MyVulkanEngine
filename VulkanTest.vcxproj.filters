@@ -137,10 +137,10 @@
     <ClInclude Include="simple_render_system.h">
       <Filter>Header Files\Engine Headers\System Headers</Filter>
     </ClInclude>
-    <ClInclude Include="mve_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mve_physics.h">
+      <Filter>Header Files\Engine Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="mve_image.h">
       <Filter>Header Files\Engine Headers</Filter>
     </ClInclude>
   </ItemGroup>

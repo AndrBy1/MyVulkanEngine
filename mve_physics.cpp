@@ -128,6 +128,13 @@ namespace mve {
 		}
 	}
 
+	AABB PhysicsClass::computeAABB(const RigidBody& body, const BoxCollider& box) {
+		return {
+			body.position - box.halfSize,
+			body.position + box.halfSize
+		};
+	}
+
 	void PhysicsClass::broadPhase(){
 		grid.clear();
 		//debugPoints->clear();
@@ -145,6 +152,7 @@ namespace mve {
 		//worst case: O(grid size * cell.size^2)
 		//Broadphase pair generation using uniform grid
 		for (auto& [_, cell] : grid) { //cell is the vector in grid that contains collider indices
+			//the nested loop generates all unique pairs within the same cell
 			for (size_t i = 0; i < cell.size(); i++) { 
 				for(size_t j = i + 1; j < cell.size(); j++){
 					// avoid duplicate pairs by ensuring j > i
@@ -154,13 +162,6 @@ namespace mve {
 			}
 		}
 		//std::cout << "in broadPhase, aabbPairs: " << aabbPairs.size() << " contacts: " << contacts.size() << "\n";
-	}
-
-	AABB PhysicsClass::computeAABB(const RigidBody& body, const BoxCollider& box) {
-		return {
-			body.position - box.halfSize,
-			body.position + box.halfSize
-		};
 	}
 
 	//

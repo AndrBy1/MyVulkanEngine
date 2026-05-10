@@ -14,7 +14,7 @@
 #endif
 
 namespace mve {
-    //member initializer list is used to initialize member variables before the constructor body executes, it is the part witht the :
+    //member initializer list is used to initialize member variables before the constructor body executes, it is the part with the :
     MvePipeline::MvePipeline(MveDevice& device, const std::string& vertFilePath, const std::string& fragFilePath, const PipelineConfigInfo& configInfo) : mveDevice{ device } {
         createGraphicsPipeline(vertFilePath, fragFilePath, configInfo);
     }
